@@ -10,6 +10,7 @@ IoU 是目标检测任务中常用的评估指标。
 """
 import numpy as np
 
+
 def calculate_iou(box1, box2):
     """
     计算两个边界框 (bounding box) 的交并比 (IoU)。
@@ -38,4 +39,23 @@ def calculate_iou(box1, box2):
     # 6. 计算并集面积 union_area = box1_area + box2_area - intersection_area。
     # 7. 计算 IoU = intersection_area / union_area。
     #    注意处理 union_area 为 0 的情况 (除零错误)。
-    pass 
+    # pass
+
+    x_left = np.maximum(box1[0], box2[0])
+    y_top = np.maximum(box1[1], box2[1])
+    x_right = np.minimum(box1[2], box2[2])
+    y_bottom = np.minimum(box1[3], box2[3])
+    # 计算相交区域面积 W * H
+    W = np.maximum(0, x_right - x_left)
+    H = np.maximum(0, y_bottom - y_top)
+    intersection_area = W * H
+    # 计算 box1 和 box2 面积
+    box1_area = (box1[2] - box1[0]) * (box1[3] - box1[1])
+    box2_area = (box2[2] - box2[0]) * (box2[3] - box2[1])
+    # 计算并集面积
+    union_area = box1_area + box2_area - intersection_area
+    # 计算 IoU, 处理除零错误
+    if union_area == 0:
+        return 0.0
+    IoU = intersection_area / union_area
+    return IoU

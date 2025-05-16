@@ -10,6 +10,7 @@ Leaky ReLU 是 ReLU 的一个变种，允许负输入值有一个小的正斜率
 """
 import numpy as np
 
+
 def leaky_relu(x, alpha=0.01):
     """
     计算 Leaky ReLU 激活函数。
@@ -27,4 +28,12 @@ def leaky_relu(x, alpha=0.01):
     # 1. 可以使用 np.maximum() 函数。
     # 2. 计算 alpha * x。
     # 3. 计算 max(alpha * x, x)。
-    pass 
+    # pass
+
+    # 判断输入是否为 numpy 数组
+    if not isinstance(x, np.ndarray):
+        raise ValueError("输入必须是 numpy 数组")
+    # 计算 alpha * x
+    negative_part = alpha * x
+    # 计算 max(alpha * x, x)
+    return np.maximum(negative_part, x)

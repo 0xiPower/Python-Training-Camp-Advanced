@@ -30,4 +30,18 @@ def smooth_l1(x, sigma=1.0):
     # 3. 对满足条件的元素应用第一个公式 (0.5 * (sigma * x)**2)。
     # 4. 对不满足条件的元素应用第二个公式 (|x| - 0.5 / sigma2)。
     # 5. 可以使用 np.where() 来根据条件选择应用哪个公式。
-    pass 
+    # pass 
+
+    # 1. 计算 sigma 的平方 sigma2。
+    sigma2 = sigma ** 2
+    # 2. 找到满足条件 |x| < 1 / sigma2 的元素索引 (可以使用 np.abs 和比较运算符)。
+    condition = np.abs(x) < 1.0 / sigma2
+    # 3. 对满足条件的元素应用第一个公式 (0.5 * (sigma * x)**2)。
+    # 4. 对不满足条件的元素应用第二个公式 (|x| - 0.5 / sigma2)。
+    # 5. 可以使用 np.where() 来根据条件选择应用哪个公式。
+    result = np.where(
+        condition,
+        0.5 * (sigma * x) ** 2,  # 当 |x| < 1 / sigma2 时
+        np.abs(x) - 0.5 / sigma2 # 否则
+    )
+    return result
